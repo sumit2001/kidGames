@@ -1,7 +1,7 @@
 import './App.css';
 import Navbar from './components/Navbar';
 import Home from './components/Home';
-import Snake from './components/Games/Snake';
+import Snake from './components/Games/Snake/Snake';
 import TicTacToe from './components/Games/TicTacToe';
 import Dragon from './components/Games/Dragon';
 import Game2048 from './components/Games/Game2048';

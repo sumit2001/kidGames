@@ -2,15 +2,15 @@ import React from 'react'
 import './style.css'
 import { useState, useEffect } from 'react';
 const Snake = () => {
-
-    const [score, setScore] = useState(0);
+    let score = 0;
+    // const [score, setScore] = useState(0);
     const [hiscore, sethiScore] = useState(0);
 
     let inputDir = { x: 0, y: 0 };
-    let foodSound = new Audio('music/food.mp3');
-    let gameOverSound = new Audio('music/gameOver.mp3');
-    let moveSound = new Audio('music/move.mp3');
-    let musicSound = new Audio('music/music.mp3');
+    let foodSound = new Audio('./music/food.mp3');
+    let gameOverSound = new Audio('./music/gameOver.mp3');
+    let moveSound = new Audio('./music/move.mp3');
+    let musicSound = new Audio('./music/music.mp3');
     let speed = 10;
     // let score = 0;
     let lastPaintTime = 0;
@@ -22,7 +22,7 @@ const Snake = () => {
     var food = { x: 6, y: 7 };
     // var scoreBox = document.getElementById("scoreBox");
     var start = document.querySelector(".start");
-    var boom = document.querySelector(".boom");
+    // var boom = document.querySelector(".boom");
     // var hiscoreval = 0;
     // var hiscoreBox = document.getElementById("hiscoreBox");
     let board = document.getElementById("board");
@@ -38,20 +38,22 @@ const Snake = () => {
 
     function gameEngine() {
         // Update snake array and food
+        // 
         if (isCollide(snakeArr)) {
-            gameOverSound.play();
+            // gameOverSound.play();
             inputDir = { x: 0, y: 0 };
             setTimeout(function () {
-                musicSound.play();
+                // musicSound.play();
             }, 1000)
-            setScore(0);
+            // setScore(0);
+            score = 0;
             var topH = document.querySelector(".head").getBoundingClientRect();
-            boom.style.top = topH.top - 60 + "px";
-            boom.style.left = topH.left - 60 + "px";
-            boom.style.display = "block";
-            setTimeout(function () {
-                boom.style.display = "none";
-            }, 5000)
+            // boom.style.top = topH.top - 60 + "px";
+            // boom.style.left = topH.left - 60 + "px";
+            // boom.style.display = "block";
+            // setTimeout(function () {
+            // boom.style.display = "none";
+            // }, 5000)
             start.innerHTML = "GAME OVER";
             var p = document.createElement("p");
             p.innerHTML = "Press Enter to Continue";
@@ -62,13 +64,14 @@ const Snake = () => {
         }
         //after eat regenerate next food
         if (snakeArr[0].y === food.y && snakeArr[0].x === food.x) {
-            setScore(score + 1);
-            if (score > hiscore) {
-                sethiScore(score);
-                localStorage.setItem("hiscore", JSON.stringify(hiscore));
-                // hiscoreBox.innerHTML = "HiScore: " + hiscoreval;
-            }
-            foodSound.play();
+            // setScore(score + 1);
+            score++;
+            // if (score > hiscore) {
+            // sethiScore(score);
+            // localStorage.setItem("hiscore", JSON.stringify(hiscore));
+            // hiscoreBox.innerHTML = "HiScore: " + hiscoreval;
+            // }
+            // foodSound.play();
             snakeArr.unshift({ x: snakeArr[0].x + inputDir.x, y: snakeArr[0].y + inputDir.y });
             let a = 2;
             let b = 16;
@@ -83,7 +86,8 @@ const Snake = () => {
         //Display snake and food
 
         // display snake
-        board.dangerouslySetInnerHTML = "";
+        if (board != null)
+            board.innerHTML = "";
         snakeArr.forEach((e, index) => {
             var snakeElement = document.createElement('div');
             snakeElement.style.gridRowStart = e.y;
@@ -92,7 +96,8 @@ const Snake = () => {
                 snakeElement.classList.add('head');
             else
                 snakeElement.classList.add('snake');
-            board.append(snakeElement);
+            if (board != null)
+                board.append(snakeElement);
             var snakeHead = document.querySelector(".head");
             if (inputDir.y === -1) {
                 snakeHead.style.transform = "scale(1.5) rotate(180deg)";
@@ -113,7 +118,8 @@ const Snake = () => {
         foodElement.style.gridRowStart = food.y;
         foodElement.style.gridColumnStart = food.x;
         foodElement.classList.add('food');
-        board.append(foodElement);
+        if (board != null)
+            board.append(foodElement);
 
     }
 
@@ -132,13 +138,9 @@ const Snake = () => {
     }
 
 
+
+
     useEffect(() => {
-
-        //Game Functions
-
-
-
-        // Main Logic
 
         let prevhiscore = localStorage.getItem("hiscore");
         if (prevhiscore === null) {
@@ -146,7 +148,6 @@ const Snake = () => {
             localStorage.setItem("hiscore", JSON.stringify(hiscore));
         } else {
             sethiScore(prevhiscore)
-            // hiscoreBox.innerHTML = "HiScore: " + hiscore;
         }
 
         window.requestAnimationFrame(main);
@@ -162,8 +163,8 @@ const Snake = () => {
                 inputDir = { x: 0, y: -1 };
                 document.querySelector(".start").innerHTML = "";
             }
-            moveSound.play();
-            console.log(snakeArr.length);
+            // moveSound.play();
+            // console.log(snakeArr.length);
             switch (e.key) {
                 case "ArrowUp":
                     if (inputDir.y !== 1 || snakeArr.length === 1) {
@@ -192,18 +193,18 @@ const Snake = () => {
                 case "Enter":
                     start.innerHTML = "Press Any Key to Continue";
                     snakeArr = [{
-                        x: 13, y: 15
+                        x: 13,
+                        y: 15
                     }];
                     window.requestAnimationFrame(main);
-                    boom.style.display = "none";
+                    // boom.style.display = "none";
                     status = "b";
-                    musicSound.pause();
+                    // musicSound.pause();
                     break;
                 default:
                     break;
             }
         })
-
     })
     return (
         <div className="body">
@@ -211,7 +212,7 @@ const Snake = () => {
             <div id="scoreBox">Score: {score}</div>
             <div id="hiscoreBox">Hi Score: {hiscore}</div>
             <div id="board"></div>
-            <img src="../../images/boom.gif" className="boom" alt="boom" />
+            {/* <img src="../../images/boom.gif" className="boom" alt="boom" /> */}
         </div>
     )
 }

@@ -2,8 +2,8 @@ import React from 'react'
 import './style.css'
 import { useState, useEffect } from 'react';
 const Snake = () => {
-    let score = 0;
-    // const [score, setScore] = useState(0);
+    // let score = 0;
+    const [score, setScore] = useState(0);
     const [hiscore, sethiScore] = useState(0);
 
     let inputDir = { x: 0, y: 0 };
@@ -35,7 +35,8 @@ const Snake = () => {
         lastPaintTime = ctime;
         gameEngine();
     }
-
+    // gameEngine();
+    // main();
     function gameEngine() {
         // Update snake array and food
         // 
@@ -46,7 +47,7 @@ const Snake = () => {
                 // musicSound.play();
             }, 1000)
             // setScore(0);
-            score = 0;
+            // score = 0;
             var topH = document.querySelector(".head").getBoundingClientRect();
             // boom.style.top = topH.top - 60 + "px";
             // boom.style.left = topH.left - 60 + "px";
@@ -54,7 +55,8 @@ const Snake = () => {
             // setTimeout(function () {
             // boom.style.display = "none";
             // }, 5000)
-            start.innerHTML = "GAME OVER";
+            if (start != null)
+                start.innerHTML = "GAME OVER";
             var p = document.createElement("p");
             p.innerHTML = "Press Enter to Continue";
             start.append(p);
@@ -64,13 +66,13 @@ const Snake = () => {
         }
         //after eat regenerate next food
         if (snakeArr[0].y === food.y && snakeArr[0].x === food.x) {
-            // setScore(score + 1);
-            score++;
-            // if (score > hiscore) {
-            // sethiScore(score);
-            // localStorage.setItem("hiscore", JSON.stringify(hiscore));
-            // hiscoreBox.innerHTML = "HiScore: " + hiscoreval;
-            // }
+            setScore(score + 1);
+            // score++;
+            if (score > hiscore) {
+                sethiScore(score);
+                localStorage.setItem("hiscore", JSON.stringify(hiscore));
+                // hiscoreBox.innerHTML = "HiScore: " + hiscoreval;
+            }
             // foodSound.play();
             snakeArr.unshift({ x: snakeArr[0].x + inputDir.x, y: snakeArr[0].y + inputDir.y });
             let a = 2;
@@ -83,11 +85,12 @@ const Snake = () => {
         }
         snakeArr[0].x += inputDir.x;
         snakeArr[0].y += inputDir.y;
+
         //Display snake and food
 
         // display snake
-        if (board != null)
-            board.innerHTML = "";
+        // if (board != null)
+        document.getElementById("board").innerHTML = "";
         snakeArr.forEach((e, index) => {
             var snakeElement = document.createElement('div');
             snakeElement.style.gridRowStart = e.y;
@@ -96,8 +99,8 @@ const Snake = () => {
                 snakeElement.classList.add('head');
             else
                 snakeElement.classList.add('snake');
-            if (board != null)
-                board.append(snakeElement);
+            // if (board != null)
+            document.getElementById("board").append(snakeElement);
             var snakeHead = document.querySelector(".head");
             if (inputDir.y === -1) {
                 snakeHead.style.transform = "scale(1.5) rotate(180deg)";
@@ -118,8 +121,8 @@ const Snake = () => {
         foodElement.style.gridRowStart = food.y;
         foodElement.style.gridColumnStart = food.x;
         foodElement.classList.add('food');
-        if (board != null)
-            board.append(foodElement);
+
+        document.getElementById("board").append(foodElement);
 
     }
 
@@ -139,73 +142,75 @@ const Snake = () => {
 
 
 
+    window.requestAnimationFrame(main);
+    window.addEventListener('keydown', e => {
 
-    useEffect(() => {
-
-        let prevhiscore = localStorage.getItem("hiscore");
-        if (prevhiscore === null) {
-            sethiScore(0);
-            localStorage.setItem("hiscore", JSON.stringify(hiscore));
-        } else {
-            sethiScore(prevhiscore)
+        if (status === "b") {
+            gameOn = true;
+            window.requestAnimationFrame(main);
         }
-
-        window.requestAnimationFrame(main);
-        window.addEventListener('keydown', e => {
-
-            if (status === "b") {
-                gameOn = true;
+        if (status !== "b" && e.key !== "Enter")
+            return;
+        if (snakeArr.length === 1 && gameOn) {
+            inputDir = { x: 0, y: -1 };
+            document.querySelector(".start").innerHTML = "";
+        }
+        // moveSound.play();
+        // console.log(snakeArr.length);
+        switch (e.key) {
+            case "ArrowUp":
+                if (inputDir.y !== 1 || snakeArr.length === 1) {
+                    inputDir.x = 0;
+                    inputDir.y = -1;
+                }
+                break;
+            case "ArrowDown":
+                if (inputDir.y !== -1 || snakeArr.length === 1) {
+                    inputDir.x = 0;
+                    inputDir.y = 1;
+                }
+                break;
+            case "ArrowLeft":
+                if (inputDir.x !== 1 || snakeArr.length === 1) {
+                    inputDir.x = -1;
+                    inputDir.y = 0;
+                }
+                break;
+            case "ArrowRight":
+                if (inputDir.x !== -1 || snakeArr.length === 1) {
+                    inputDir.x = 1;
+                    inputDir.y = 0;
+                }
+                break;
+            case "Enter":
+                start.innerHTML = "Press Any Key to Continue";
+                snakeArr = [{
+                    x: 13,
+                    y: 15
+                }];
                 window.requestAnimationFrame(main);
-            }
-            if (status !== "b" && e.key !== "Enter")
-                return;
-            if (snakeArr.length === 1 && gameOn) {
-                inputDir = { x: 0, y: -1 };
-                document.querySelector(".start").innerHTML = "";
-            }
-            // moveSound.play();
-            // console.log(snakeArr.length);
-            switch (e.key) {
-                case "ArrowUp":
-                    if (inputDir.y !== 1 || snakeArr.length === 1) {
-                        inputDir.x = 0;
-                        inputDir.y = -1;
-                    }
-                    break;
-                case "ArrowDown":
-                    if (inputDir.y !== -1 || snakeArr.length === 1) {
-                        inputDir.x = 0;
-                        inputDir.y = 1;
-                    }
-                    break;
-                case "ArrowLeft":
-                    if (inputDir.x !== 1 || snakeArr.length === 1) {
-                        inputDir.x = -1;
-                        inputDir.y = 0;
-                    }
-                    break;
-                case "ArrowRight":
-                    if (inputDir.x !== -1 || snakeArr.length === 1) {
-                        inputDir.x = 1;
-                        inputDir.y = 0;
-                    }
-                    break;
-                case "Enter":
-                    start.innerHTML = "Press Any Key to Continue";
-                    snakeArr = [{
-                        x: 13,
-                        y: 15
-                    }];
-                    window.requestAnimationFrame(main);
-                    // boom.style.display = "none";
-                    status = "b";
-                    // musicSound.pause();
-                    break;
-                default:
-                    break;
-            }
-        })
+                // boom.style.display = "none";
+                status = "b";
+                // musicSound.pause();
+                break;
+            default:
+                break;
+        }
     })
+
+
+    // useEffect(() => {
+    // let prevhiscore = localStorage.getItem("hiscore");
+    // if (prevhiscore === null) {
+    //     sethiScore(0);
+    //     localStorage.setItem("hiscore", JSON.stringify(hiscore));
+    // }
+    // else {
+    // sethiScore(12)
+    // sethiScore(prevhiscore)
+    // }
+    // })
+
     return (
         <div className="body">
             <div className="start">Press any Key to Start the Game</div>

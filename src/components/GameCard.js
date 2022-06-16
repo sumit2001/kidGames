@@ -8,7 +8,7 @@ const GameCard = (props) => {
                 <img src={props.game.imageUrl} className="card-img-top" alt="game" style={{ height: "250px" }} />
                 <div className="card-body">
                     <h5 className="card-title">{props.game.gameName}</h5>
-                    <Link to={props.game.ref} className="btn btn-primary">Play Game</Link>
+                    <a href={props.game.ref} target="_blank" className="btn btn-primary">Play Game</a>
                 </div>
             </div>
         </div >

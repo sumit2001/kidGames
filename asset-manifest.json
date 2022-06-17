@@ -1,0 +1,15 @@
+{
+  "files": {
+    "main.css": "/kidGames/static/css/main.073c9b0a.css",
+    "main.js": "/kidGames/static/js/main.c0e81d75.js",
+    "static/js/787.bdc2d5e5.chunk.js": "/kidGames/static/js/787.bdc2d5e5.chunk.js",
+    "index.html": "/kidGames/index.html",
+    "main.073c9b0a.css.map": "/kidGames/static/css/main.073c9b0a.css.map",
+    "main.c0e81d75.js.map": "/kidGames/static/js/main.c0e81d75.js.map",
+    "787.bdc2d5e5.chunk.js.map": "/kidGames/static/js/787.bdc2d5e5.chunk.js.map"
+  },
+  "entrypoints": [
+    "static/css/main.073c9b0a.css",
+    "static/js/main.c0e81d75.js"
+  ]
+}

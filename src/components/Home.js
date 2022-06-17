@@ -16,7 +16,7 @@ const Home = (props) => {
     }, {
         gameName: "2048",
         imageUrl: "https://upload.wikimedia.org/wikipedia/commons/thumb/1/18/2048_logo.svg/1200px-2048_logo.svg.png",
-        ref: "https://consolegame-2048.herokuapp.com/"
+        ref: "https://kidgames.herokuapp.com/2048/"
     },]
 
     return (
